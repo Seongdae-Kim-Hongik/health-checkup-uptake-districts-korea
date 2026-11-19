@@ -4,7 +4,7 @@ Analysis code for the manuscript
 
 > Kim S. *Where do eligible adults miss Korea's national health check-up? Fourteen years of district uptake.*
 
-Archived version: Zenodo, https://doi.org/10.5281/zenodo.24356241 (v1.0.0).
+Archived version: Zenodo, https://doi.org/10.5281/zenodo.24357326 (v1.0.1).
 
 This code is released under the MIT licence.
 
@@ -16,7 +16,7 @@ This repository contains code only. The processed district-year data (analytic p
 |---|---|
 | `01_스크립트/` | Analysis scripts (below) |
 | `04_분석/SCRN/` | Covariate pool and model settings (`make_pool_sets_scrn.py`, `sets_SCRN_*.json`, `config_SCRN_std3.json`, SHA-256 hashes of the settings fixed before fitting), the full model chain (`run_std3_chain.sh`) and the district adjacency graph (`graph_593.graph`). Sensitivity versions: queen contiguity graph `s577`, without the share aged 80 or older `s2`, expected uptake ignoring sex `s8` |
-| `04_분석/SCRN/MS/build/` | Scripts that read the result tables and write every number, table and figure in the manuscript and supplementary material (`numbers_scrn.py`, `figs_scrn.py`, `content_scrn.py`, `build_manuscript_scrn.py`, `esm_scrn.py`, `build_refs_scrn.py`) |
+| `04_분석/SCRN/MS/build/` | Scripts that read the result tables and write every number, table and figure in the manuscript and supplementary material (`numbers_scrn.py`, `figs_scrn.py`, `content_scrn.py`, `build_manuscript_base_scrn.py`, `build_manuscript_scrn.py`, `esm_scrn.py`, `build_refs_scrn.py`) |
 
 Folder and some column names are in Korean because the source tables are Korean; each script has a header comment describing its inputs and outputs.
 

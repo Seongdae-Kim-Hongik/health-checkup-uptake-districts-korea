@@ -2,15 +2,15 @@
 import os, sys, json, subprocess, pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import content_scrn as C
-from build_manuscript_scrn import TX, foot_row, LABEL, GROUPS
-MSD = os.path.dirname(HERE); OUT = os.path.join(MSD, "out"); B = os.path.dirname(MSD); RS = os.path.join(B, "results_std3"); PAN = os.path.join(os.path.dirname(os.path.dirname(B)), "02_패널")
+from build_manuscript_base_scrn import TX, foot_row, LABEL, GROUPS
+MSD = os.path.dirname(HERE); OUT = os.path.join(MSD, os.environ.get("ESM_OUT", "out")); JRN = os.environ.get("ESM_JOURNAL", ""); B = os.path.dirname(MSD); RS = os.path.join(B, "results_std3"); PAN = os.path.join(os.path.dirname(os.path.dirname(B)), "02_패널")
 N = C.N; f3 = lambda t: f"{t[0]:.3f} ({t[1]:.3f}–{t[2]:.3f})" if t else "–"
 HYP = [v for _, vs in GROUPS[:4] for v in vs]
 J = TX(cite="bracket")
 def TF(title, header, rows, foot="", fs=8, land=False, port=False):
     J.new_page("landscape") if land else (J.new_page("portrait") if port else J.page_break()); J.table_fit(title, header, rows, "", fs_max=fs, title_bold=True)
     if foot: foot_row(J, foot, 8, 12)
-J.para("<b>Supplementary material</b>"); J.para(f"Supplementary material for the manuscript entitled \"{C.TITLE}\"")
+J.para("<b>Online Resource 1</b>" if JRN else "<b>Supplementary material</b>"); J.para(f"Supplementary material for the manuscript entitled \"{C.TITLE}\"" + (f", {JRN}. Seongdae Kim, Department of Biohealth Convergence Open Sharing System, Hongik University, Seoul, Republic of Korea (kimsd@hongik.ac.kr)" if JRN else ""))
 J.para("Contents. Supporting Methods; Table S1 (district characteristics); Table S2 (structural alternatives); Table S3 (other alternative specifications); Table S3b (separate periods); Table S4 (prespecified and post hoc analyses); Table S5 (national eligible persons and attendees, residual autocorrelation and negative controls).")
 J.head("Supporting Methods", 1)
 SM = [
@@ -94,7 +94,7 @@ CK = [("Title and abstract", "1", "Title page; Abstract"), ("Background/rational
       ("Main results", "16", f"Results, {RH[1]}; Table 2; Figure 2"), ("Other analyses", "17", f"Results, {RH[1]}; Tables S2–S5"),
       ("Key results", "18", "Discussion, Main findings"), ("Limitations", "19", "Discussion, Strengths and limitations"), ("Interpretation", "20", "Discussion, Interpretation"), ("Generalisability", "21", "Discussion; Conclusions"),
       ("Other information (funding, code)", "22", "Statements and Declarations (Funding; Data availability)")]
-K = TX(cite="bracket"); K.para("<b>STROBE checklist</b>"); K.para(f"Manuscript \"{C.TITLE}\"")
+K = TX(cite="bracket"); K.para("<b>Online Resource 2. STROBE checklist</b>" if JRN else "<b>STROBE checklist</b>"); K.para(f"Manuscript \"{C.TITLE}\"" + (f", {JRN}. Seongdae Kim, Hongik University (kimsd@hongik.ac.kr)" if JRN else ""))
 K.table_fit("STROBE checklist for this ecological study", ["Item", "No.", "Where reported"], [[a, b, c] for a, b, c in CK], "", fs_max=9, title_bold=True)
 foot_row(K, "STROBE, Strengthening the Reporting of Observational Studies in Epidemiology. Section names refer to the main manuscript and the Supplementary material.", 8, 12)
 pk = os.path.join(OUT, "STROBE_checklist.docx"); K.doc_title = "STROBE checklist"; K.save(pk)

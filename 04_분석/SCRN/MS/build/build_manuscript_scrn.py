@@ -1,159 +1,114 @@
+#   그림 범례 'Fig. 1' 굵게·끝 구두점 없음, 보충 = 'Online Resource 1', 파일명 ESM_1.pdf·Fig1.tif. 게재료 없음(구독).
 import os, re, json, subprocess, sys
 from docx.shared import Pt
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import content_scrn as C
-from jkms_engine import JKMS
-MS = os.path.dirname(HERE); OUT = os.path.join(MS, "out"); os.makedirs(OUT, exist_ok=True)
-N = C.N; REFS = json.load(open(os.path.join(HERE, "refs_scrn.json"), encoding="utf-8"))
-_zf = os.path.join(OUT, "zenodo_doi.txt"); ZENODO = open(_zf).read().strip() if os.path.exists(_zf) else "[ZENODO DOI]"
-_gf = os.path.join(OUT, "github_url.txt"); GITHUB = open(_gf).read().strip() if os.path.exists(_gf) else "[GITHUB URL]"
-ORCID = "0000-0002-1525-0091"
-AFFIL = "Department of Biohealth Convergence Open Sharing System, Hongik University, Seoul, Republic of Korea"
-ADDRESS = "Department of Biohealth Convergence Open Sharing System, Hongik University, 94 Wausan-ro, Mapo-gu, Seoul 04066, Republic of Korea"
-PHONE = "+82-2-320-1114"
-ETHICS = "The Institutional Review Board of Hongik University approved the study (7002340-202511-HR-012; continuing review 7002340-202611-HR-040) and waived informed consent because only published aggregate statistics were used."
-AI_USE = ("The author used Claude (Anthropic) and ChatGPT (OpenAI) only for translation and English-language editing of the manuscript. "
-          "The author reviewed and edited all output and takes full responsibility for the content of this publication.")
-CREDIT = "Seongdae Kim: conceptualisation, data curation, formal analysis, methodology, software, visualisation, writing – original draft, and writing – review and editing."
-CONSENT_P = "Not applicable. Only published aggregate statistics were used, and the Institutional Review Board waived informed consent."
-CONSENT_PUB = "Not applicable."
-COI = "The author declared no potential conflicts of interest with respect to the research, authorship, and/or publication of this article."
-FUNDING = "The author received no financial support for the research, authorship, and/or publication of this article."
-def data_statement(): return ("All source data are publicly available aggregate statistics from the National Health Insurance Service, resident registration and the Korea Community Health Survey, accessed through the Korean Statistical Information Service. "
-                             f"The analysis code that generates every number, table and figure is openly available on GitHub ({GITHUB}) and archived on Zenodo (https://doi.org/{ZENODO}). The processed district-year data are available from the author on reasonable request.")
-
-class TX(JKMS):
-    raw = False
-    def _emit(self, p, text, sz=12, bold=False, italic=False):
-        if not self.raw: text = re.sub(r"(^|[\s(])-(?=\d)", "\\1\u2212", text)
-        return super()._emit(p, text, sz, bold, italic)
-def pandoc_cites(t):   # Sage Vancouver: 위첨자 번호는 구두점 뒤
-    t = re.sub(r"\s*\[(@[^\]]+)\]", lambda m: "{{" + ",".join(k.strip().lstrip("@") for k in m.group(1).split(";")) + "}}", t)
-    return re.sub(r"(\{\{[^}]+\}\})([.,;:])", r"\2\1", t)
+import build_manuscript_base_scrn as J0
+from build_manuscript_base_scrn import TX, put_table, table1, table2, ZENODO, GITHUB, ORCID, AFFIL, ADDRESS, ETHICS
+MS = os.path.dirname(HERE); OUT = os.path.join(MS, "out_springer"); os.makedirs(OUT, exist_ok=True)
+N = C.N; REFS = json.load(open(os.path.join(HERE, "refs_scrn_full.json"), encoding="utf-8"))
+JN = {"suh2017impact": "The American Journal of Cardiology", "kang2017current": "Annals of Occupational and Environmental Medicine", "kim2017first": "Annals of Occupational and Environmental Medicine",
+      "eom2017effectiveness": "Annals of Occupational and Environmental Medicine", "lee2026occupational": "Annals of Occupational and Environmental Medicine", "kim2023regional": "Environmental Health and Preventive Medicine",
+      "kim2026impact": "Frontiers in Public Health", "hahm2017why": "Cancer Research and Treatment", "kim2016impact": "Cancer Research and Treatment", "kang2014factors": "Asian Pacific Journal of Cancer Prevention",
+      "hart1971inverse": "Lancet", "vonelm2007strengthening": "Lancet", "liss2021general": "JAMA", "tabuchi2015determinants": "Cancer Science", "chiou2014changes": "Health Policy", "ko2016unmet": "Health Policy",
+      "shim2019employment": "BMC Public Health", "yamaguchi2018sociodemographic": "BMC Public Health", "sedani2025social": "JAMA Network Open", "luu2023socioeconomic": "Epidemiology and Health",
+      "park2022impact": "Epidemiology and Health", "igarashi2019nonparticipation": "Geriatrics & Gerontology International", "cheolseong2017data": "International Journal of Epidemiology",
+      "inskip1983methods": "Statistics in Medicine", "knorrheld2000bayesian": "Statistics in Medicine", "kang2015korea": "Osong Public Health and Research Perspectives",
+      "riebler2016intuitive": "Statistical Methods in Medical Research", "simpson2017penalising": "Statistical Science", "rue2009approximate": "Journal of the Royal Statistical Society: Series B (Statistical Methodology)",
+      "steegen2016increasing": "Perspectives on Psychological Science", "dupont2022spatial": "Biometrics", "lipsitch2010negative": "Epidemiology", "bell2015explaining": "Political Science Research and Methods",
+      "morgenstern1995ecologic": "Annual Review of Public Health", "besag1991bayesian": "Annals of the Institute of Statistical Mathematics", "ord1995local": "Geographical Analysis"}
+FIXN = {"Cheol Seong S": "Seong, S. C.", "Heon Park J": "Park, J. H.", "Hyon Bang J": "Bang, J. H.", "Ae Shin S": "Shin, S. A.", "L Kim EA": "Kim, E. A."}
+def apa_name(n):
+    n = n.strip()
+    if n in FIXN: return FIXN[n]
+    m = re.match(r"^(.*?)\s+([A-Z]{1,4})$", n)
+    if not m: return n
+    return f"{m.group(1)}, " + " ".join(f"{c}." for c in m.group(2))
 def ref(k):
     r = REFS[k]
-    if r["type"] == "web": return f"{r['authors']}. {r['title']}, {r['url']} ({r['year']}, accessed {r['accessed']})."
-    au = r["authors"]; a = (au[0] if len(au) == 1 else ", ".join(au[:-1]) + " and " + au[-1]) if len(au) <= 3 else ", ".join(au[:3]) + ", et al"
+    if r["type"] == "web": return f"{r['authors']}. ({r['year']}). {r['title']}. Retrieved {r['accessed']}, from {r['url']}"
+    au = [apa_name(a) for a in r.get("authors_all") or r["authors"]]
+    if len(au) > 20: au = au[:19] + ["…", au[-1]]
+    a = au[0] if len(au) == 1 else (", ".join(au[:-1]) + ", & " + au[-1])
     t = r["title"].rstrip("."); t = t + ("" if t.endswith(("?", "!")) else ".")
-    s = f"{a}. {t} {r['journal']} {r['year']}"
-    if r.get("vol"): s += f"; {r['vol']}"
-    pg = r.get("pages") or r.get("elocation", "").replace("doi: ", "")
-    if pg and not pg.startswith("10."):
-        if "-" in pg:   # 축약 쪽수 전체로(405-12 → 405–412)
+    s = f"{a} ({r['year']}). {t} <i>{JN[k]}</i>"
+    if r.get("vol"): s += f", <i>{r['vol']}</i>" + (f"({r['issue']})" if r.get("issue") else "")
+    pg = r.get("pages") or r.get("elocation", "")
+    if pg and not pg.startswith(("10.", "doi")):
+        if "-" in pg:
             a1, b1 = pg.split("-")[:2]
             if b1.isdigit() and a1.isdigit() and len(b1) < len(a1): b1 = a1[:len(a1) - len(b1)] + b1
             pg = f"{a1}–{b1}"
-        s += f": {pg}"
+        s += f", {pg}"
     s += "."
-    if r.get("doi"): s += f" DOI: {r['doi']}."
+    if r.get("doi"): s += f" https://doi.org/{r['doi']}"
     return s
-def f3(t): return f"{t[0]:.3f} ({t[1]:.3f}–{t[2]:.3f})"
-TAB1 = [("walking", "Walking, %"), ("mpa", "Moderate-or-higher physical activity, %"), ("public_fac", "Public sports facilities, per 100,000"), ("village_fac", "Village sports facilities, per 100,000"),
-        ("smoking", "Current smoking, %"), ("drinking", "High-risk drinking, %"), ("obesity", "Obesity (self-reported), %"), ("im_spec", "Internal-medicine specialists, per 100,000"),
-        ("unmet", "Unmet healthcare need, %"), ("livelihood", "Basic livelihood recipients, %"), ("tertiary", "Tertiary-educated adults, %"), ("alone_elderly", "Older adults living alone, %"),
-        ("urban", "Urban-zone population, %"), ("physicians", "Physicians, per 1000"), ("sex_ratio", "Sex ratio, men per 100 women"), ("fiscal", "Fiscal autonomy, %"), ("pop80", "Aged 80 years or older, %")]
-WC = ["2011-2017", "2018-2024", "2011-2024"]; WH = ["2011–2017", "2018–2024", "2011–2024"]
-def table1():
-    T = N["T1"]
-    rows = [["__H__", "Screening"], ["  District-years, No."] + [f"{T[c]['n']:,}" for c in WC], ["  Eligible persons, No."] + [f"{T[c]['elig']:,.0f}" for c in WC],
-            ["  First-stage attendees, No. (%)"] + [f"{T[c]['scr']:,.0f} ({100*T[c]['rate']:.1f})" for c in WC],
-            ["  District SUR, median (P10–P90)ᵃ"] + [f"{T[c]['sur_med']:.2f} ({T[c]['sur_p10']:.2f}–{T[c]['sur_p90']:.2f})" for c in WC], ["__H__", "District characteristics, mean (SD)"]]
-    for v, lab in TAB1:
-        mx = max(abs(T[c]['cov'][v][0]) for c in WC); dp = 0 if mx >= 100 else (2 if mx < 5 else 1)
-        rows.append([f"  {lab}"] + [f"{T[c]['cov'][v][0]:.{dp}f} ({T[c]['cov'][v][1]:.{dp}f})" for c in WC])
-    foot = ("Abbreviations: P10–P90, 10th–90th percentile; SD, standard deviation; SUR, standardised uptake ratio. ᵃObserved over sex-standardised expected attendees summed over the period. "
-            "Characteristics are district-year means; the last 5 rows are the forced adjustments.")
-    return (f"Table 1. Uptake of the general health check-up and district characteristics, {N['n_districts']} districts, Republic of Korea, 2011–2024", ["Characteristic"] + WH, rows, foot)
-GROUPS = [("Physical activity", ["walking", "mpa", "public_fac", "village_fac"]), ("Health behaviours", ["smoking", "drinking", "obesity"]), ("Care access", ["im_spec", "unmet"]),
-          ("Household and social", ["livelihood", "tertiary", "alone_elderly"]), ("Forced adjustments", ["urban", "physicians", "sex_ratio", "fiscal", "pop80"])]
-LABEL = {"walking": "Walking (+)", "mpa": "Moderate-or-higher physical activity (+)", "public_fac": "Public sports facilities (+)", "village_fac": "Village sports facilities (+)",
-         "smoking": "Current smoking (−)", "drinking": "High-risk drinking (−)", "obesity": "Obesity (±)", "im_spec": "Internal-medicine specialists (+)", "unmet": "Unmet healthcare need (−)",
-         "livelihood": "Basic livelihood recipients (−)", "tertiary": "Tertiary-educated adults (+)", "alone_elderly": "Older adults living alone (−)",
-         "urban": "Urban-zone population", "physicians": "Physicians", "sex_ratio": "Sex ratio", "fiscal": "Fiscal autonomy", "pop80": "Aged 80 years or older"}
-def table2():
-    rows = []
-    for g, vs in GROUPS:
-        rows.append(["__H__", g])
-        for v in vs:
-            mv = N["mv"].get(v)
-            rows.append([f"  {LABEL[v]}", f3(N["main"][v]), f"{100*mv[0]:.0f}" if mv else "Forced", f3(N["KH_typeII"][v]), f3(N["KH_typeIII"][v]), f3(N["KH_typeIV"][v]), f3(N["D1_spatial_plus"][v]), f3(N["RSR"][v])])
-    foot = ("Values are OR (95% CrI). Abbreviations: CrI, credible interval; OR, odds ratio of uptake per 1 standard deviation; RSR, restricted spatial regression; expected direction in parentheses. Principal model: binomial with an observation-level random effect, a Besag-York-Mollié 2 district effect and random-walk and independent year effects, "
-            "offset = logit of sex-standardised expected uptake. Knorr-Held type I gave the same estimates as the principal model to the third decimal (Supplementary Table S2). "
-            "Credibility was judged on unrounded limits. ᵃShare of the covariate-subset models containing the characteristic (of 200 models) in which the CrI excluded 1. ᵇKnorr-Held space-time interaction added. ᶜSpatial+ with spatially filtered characteristics. ᵈRestricted spatial regression: district effect constrained to be orthogonal to district means of all characteristics.")
-    return (f"Table 2. District characteristics and uptake of the general health check-up, {N['n_districts']} districts, Republic of Korea, 2011–2024",
-            ["Characteristic", "Principal model", "Subsets credible, %ᵃ", "Type IIᵇ", "Type IIIᵇ", "Type IVᵇ", "Spatial+ᶜ", "RSRᵈ"], rows, foot)
-FIGCAP = {
- 1: "Uptake of the first-stage general health check-up, Republic of Korea, 2011–2024. (A) District standardised uptake ratio (observed over sex-standardised expected attendees, 14 years pooled), with Getis-Ord Gi* hot spots (solid outline) and cold spots (dashed outline) of the log ratio at P < 0.05 without correction for multiple testing. (B) Residual district effect from the principal model: exponentiated posterior mean of the combined structured and unstructured district effect, an odds ratio conditional on the district characteristics. (C) National uptake among eligible men and women by year; dotted lines mark the change of the published table and a 10% rise in eligible persons in 2018, the 2019 extension of eligibility to adults aged 20–39 years, and the COVID-19 pandemic from 2020.",
- 2: "Odds ratios of uptake per 1 standard deviation (95% credible intervals) for the share of older adults living alone, tertiary-educated adults, walking and public sports facilities across alternative analyses: principal model, Knorr-Held type II and IV space-time interactions, Spatial+, restricted spatial regression, between-district and within-district components, and 2019–2024 only.",
-}
-def foot_row(J, text, sz=8, ls=12):
-    from docx.enum.text import WD_LINE_SPACING
-    t = J.doc.tables[-1]; r = t.add_row(); mc = r.cells[0].merge(r.cells[-1]); mc.text = ""; p = mc.paragraphs[0]
-    p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY; p.paragraph_format.line_spacing = Pt(ls); p.paragraph_format.space_before = Pt(4)
-    J._emit(p, text, sz)
-def put_table(J, t, fs=9):
-    J.table_fit(t[0], t[1], t[2], "", fs_max=fs, title_bold=True); foot_row(J, t[3], 8)
-def declarations(J, lvl=2):
-    for h, t in [("Ethical considerations", ETHICS), ("Consent to participate", CONSENT_P), ("Consent for publication", CONSENT_PUB),
-                 ("Declaration of conflicting interests", COI), ("Funding", FUNDING), ("Data availability", data_statement())]:
-        J.head(h, lvl); J.para(t)
+def cites(t):
+    return re.sub(r"\s*\[(@[^\]]+)\]", lambda m: " {{" + ",".join(k.strip().lstrip("@") for k in m.group(1).split(";")) + "}}", t)
+def esm(t):   # 보충 명칭: Springer 'Online Resource'
+    t = t.replace("Supplementary Tables S2–S5c", "Online Resource 1 (Tables S2–S5c)").replace("Supplementary Table S1", "Online Resource 1, Table S1")
+    return t.replace("with the checklist provided as a supplementary file", "with the checklist provided as Online Resource 2")
+ABS = (f"Uptake of national health check-ups among eligible adults varies between areas, but long-term small-area patterns are rarely described. This ecological panel study examined first-stage uptake of the National Health Insurance Service general health screening among eligible persons in all {N['n_districts']} districts of the Republic of Korea from 2011 to 2024 ({N['scr_total_m']:.1f} million attendances among {N['elig_total_m']:.1f} million eligible persons summed over years). "
+       f"Expected attendees were standardised for sex, and Bayesian spatio-temporal binomial models related uptake to 12 district characteristics with 5 adjustments, followed by covariate-subset, space-time and spatial-confounding checks. "
+       f"National uptake was {C.U['2011']}% in 2011, {C.U['2017']}% in 2017, {C.U['2020']}% in 2020 and {C.U['2024']}% in 2024. District standardised uptake ratios ranged from {N['sur_p10']:.2f} to {N['sur_p90']:.2f} (10th–90th percentile); 10 of {N['gi_cold']} local cold spots were in Seoul, and industrial cities such as Ulsan and Geoje had high ratios. "
+       f"Uptake was lower where more older adults lived alone (odds ratio per 1 standard deviation {C.m('alone_elderly', lab=False)}), an association retained in space-time and spatial-confounding models but not with an intrinsic autoregressive district effect alone or in 2019–2024 alone. Physical activity indicators showed no consistent association. "
+       "District differences in uptake were small but persistent. The association with older adults living alone was model-dependent and may identify districts for closer study rather than individuals for outreach.")
+KEYWORDS = "Mass screening; Preventive health services; Healthcare disparities; Small-area analysis; Spatio-temporal analysis; Republic of Korea"
+AI_M = "The author used Claude (Anthropic) and ChatGPT (OpenAI) only for translation and English-language editing of the manuscript, reviewed and edited all output, and takes full responsibility for the content."
+def data_statement(): return ("All source data are publicly available aggregate statistics from the National Health Insurance Service, resident registration and the Korea Community Health Survey, accessed through the Korean Statistical Information Service. "
+                             "The processed district-year data are available from the author on reasonable request.")
+def code_statement(): return f"The analysis code that generates every number, table and figure is openly available on GitHub ({GITHUB}) and archived on Zenodo (https://doi.org/{ZENODO})."
+FIGCAP = {1: J0.FIGCAP[1].rstrip("."), 2: J0.FIGCAP[2].rstrip(".")}
 def build(counts=None):
-    J = TX(cite="sup"); c = counts or {}
+    J = TX(cite="bracket"); c = counts or {}
     J.para(f"<b>{C.TITLE}</b>")
-    J.para(f"<b>Running title:</b> {C.RUNNING}", before=6)
-    J.para("Seongdae Kim, PhD", before=6); J.para(AFFIL)
-    J.para(f"<b>Corresponding author:</b> Seongdae Kim, PhD, {ADDRESS}. Email: kimsd@hongik.ac.kr. ORCID: {ORCID}", before=6)
-    J.para(f"<b>Word count:</b> main text, {c.get('main', '[M]')} words; abstract, {c.get('abstract', '[A]')} words; tables, 2; figures, 2; references, {c.get('refs', '[R]')}; supplementary files, 2 (Supplementary material and STROBE checklist).", before=6)
-    J.page_break(); J.head("Abstract", 1)
-    for h, t in C.ABSTRACT: J.para(f"<b>{h}:</b> {t}")
-    J.para(f"<b>Keywords:</b> {C.KEYWORDS}", before=6)
+    J.para("Seongdae Kim", before=6); J.para(AFFIL)
+    J.para(f"<b>Corresponding author:</b> Seongdae Kim, {ADDRESS}. Email: kimsd@hongik.ac.kr. ORCID: {ORCID}", before=6)
+    J.para("<b>Acknowledgments:</b> None.", before=6)
+    J.para(f"<b>Word count:</b> abstract, {c.get('abstract', '[A]')} words; main text, {c.get('main', '[M]')} words; tables, 2; figures, 2; references, {c.get('refs', '[R]')}.", before=6)
+    J.page_break(); J.head("Abstract", 1); J.para(ABS)
+    J.para(f"<b>Keywords:</b> {KEYWORDS}", before=6)
     J.page_break(); J.counting = True
     J.head("Introduction", 1)
-    for p in C.INTRO: J.para(pandoc_cites(p), indent=True)
+    for p in C.INTRO: J.para(cites(esm(p)), indent=True)
     J.head("Methods", 1)
-    for x in C.METHODS:
+    for i, x in enumerate(C.METHODS):
         J.head(x[0], 2)
-        for p in x[1:]: J.para(pandoc_cites(p), indent=True)
+        for p in x[1:]:
+            if p.startswith("The Institutional Review Board"): p = p + " " + AI_M
+            J.para(cites(esm(p)), indent=True)
     J.head("Results", 1)
     for x in C.RESULTS:
         J.head(x[0], 2)
-        for p in x[1:]: J.para(pandoc_cites(p), indent=True)
+        for p in x[1:]: J.para(cites(esm(p)), indent=True)
     J.head("Discussion", 1)
     for p in C.DISCUSSION:
         if p.startswith("### "): h = p[4:].strip(); J.head(h, 1 if h == "Conclusions" else 2); continue
-        J.para(pandoc_cites(p), indent=True)
+        J.para(cites(esm(p)), indent=True)
     J.counting = False
-    J.head("Acknowledgements", 1); J.para("None.")
-    J.head("Author contributions", 1); J.para(CREDIT)
-    J.head("Use of artificial intelligence", 1); J.para(AI_USE)
-    J.head("Statements and Declarations", 1); declarations(J)
+    J.head("Statements and Declarations", 1)
+    for h, t in [("Funding", "No funding was received for conducting this study."), ("Competing interests", "The author has no relevant financial or non-financial interests to disclose."),
+                 ("Ethics approval", ETHICS), ("Consent to participate", "Not applicable. Only published aggregate statistics were used, and the Institutional Review Board waived informed consent."),
+                 ("Consent for publication", "Not applicable."), ("Data availability", data_statement()), ("Code availability", code_statement()),
+                 ("Author contributions", "Seongdae Kim: conceptualization, data curation, formal analysis, methodology, software, visualization, writing – original draft, and writing – review and editing.")]:
+        J.head(h, 2); J.para(t)
     unused = set(REFS) - set(J.cites); assert not unused, unused
-    J.page_break(); J.head("References", 1); J.raw = True; rl = []
-    for i, k in enumerate(J.cites, 1): s = f"{i}. " + ref(k); rl.append(s); J.para(s)
-    J.raw = False
+    J.page_break(); J.head("References", 1); rl = []
+    for i, k in enumerate(J.cites, 1): s = f"{i}. " + ref(k); rl.append(s); J.raw = True; J.para(s); J.raw = False
     J.page_break(); put_table(J, table1())
     J.new_page("landscape"); put_table(J, table2(), fs=8)
-    J.new_page("portrait"); J.head("Figure legends", 1)
-    for k in sorted(FIGCAP): J.para(f"<b>Figure {k}.</b> {FIGCAP[k]}", after=6)
+    J.new_page("portrait"); J.head("Figure captions", 1)
+    for k in sorted(FIGCAP): J.para(f"<b>Fig. {k}</b> {FIGCAP[k]}", after=6)
     return J, rl
-def docx_text(path):
-    from docx import Document
-    d = Document(path); t = [p.text for p in d.paragraphs]
-    for tb in d.tables:
-        for r in tb.rows:
-            seen = []; [seen.append(c) for c in r.cells if not any(c._tc is x._tc for x in seen)]; t.append(" | ".join(c.text for c in seen))
-    return "\n".join(t)
 def main_words(path):
-    t = docx_text(path); i = t.find("\nIntroduction\n"); j = t.find("\nAcknowledgements\n"); return len(t[i:j].split())
+    t = J0.docx_text(path); i = t.find("\nIntroduction\n"); j = t.find("\nStatements and Declarations\n"); return len(t[i:j].split())
 if __name__ == "__main__":
-    p = os.path.join(OUT, "Manuscript.docx"); aw = sum(len(t.split()) for _, t in C.ABSTRACT)
+    p = os.path.join(OUT, "Manuscript.docx"); aw = len(ABS.split()); assert 150 <= aw <= 250, aw
     J, rl = build(); J.doc_title = "Manuscript"; J.save(p)
     for _ in range(2):
         mw = main_words(p); J, rl = build({"main": f"{mw:,}", "abstract": aw, "refs": len(rl)}); J.doc_title = "Manuscript"; J.save(p)
-    subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_scrn_ms", "--convert-to", "pdf", "--outdir", OUT, p], check=True, capture_output=True)
+    subprocess.run(["/opt/homebrew/bin/soffice", "--headless", "-env:UserInstallation=file:///tmp/lo_scrn_springer", "--convert-to", "pdf", "--outdir", OUT, p], check=True, capture_output=True)
     npg = int(re.search(r"Pages:\s+(\d+)", subprocess.run(["pdfinfo", p.replace(".docx", ".pdf")], capture_output=True, text=True).stdout).group(1))
-    mw = main_words(p)
     open(os.path.join(OUT, "reference_list.txt"), "w", encoding="utf-8").write("\n".join(rl))
-    print(f"[build] main text {mw} (limit 4000) · abstract {aw} (limit 250) · refs {len(rl)} · pages {npg}")
-    open(os.path.join(OUT, "wordcount.txt"), "w").write(f"main={mw}\nabstract={aw}\nrefs={len(rl)}\npages={npg}\n")
-    assert mw <= 4000 and aw <= 250
+    open(os.path.join(OUT, "wordcount.txt"), "w").write(f"main={main_words(p)}\nabstract={aw}\nrefs={len(rl)}\npages={npg}\n")
+    print(f"[build JCH] main {main_words(p)} · abstract {aw} (150–250) · keywords {len(KEYWORDS.split(';'))} · refs {len(rl)} · pages {npg}")
