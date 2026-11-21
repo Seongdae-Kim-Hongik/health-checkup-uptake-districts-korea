@@ -31,6 +31,16 @@ SUB = [
  ("The Institutional Review Board of Hongik University approved the study (7002340-202511-HR-012; continuing review 7002340-202611-HR-040) and waived informed consent because only published aggregate statistics were used.",
   "The institutional review board of the author's institution approved the study and its continuing review and waived informed consent because only published aggregate statistics were used (details on the title page)."),
 ]
+SUB += [   # 11/21 인용 내용 대조(⚠ 10) 반영 — 새 문헌 없이 표현·인용 위치 수정
+ ("General health checks offered to asymptomatic adults are widespread in East Asia, although trials in Western populations have not shown that they reduce mortality [@liss2021general].", "Trials of general health checks for asymptomatic adults, mostly in Western populations, have not shown that they reduce mortality [@liss2021general]."),
+ ("Older people with little social contact are less likely to attend community check-ups in Japan", "In Japan, older people who did not take part in community activities were less likely to attend community check-ups"),
+ ("social isolation has been associated with non-adherence to cancer screening in the United States", "social isolation has been associated with non-adherence to some cancer screenings in the United States"),
+ ("That analysis covered 2 years with a geographically weighted regression;", "That analysis covered 2 years with a geographically weighted regression [@kim2023regional];"),
+ ("heads of self-employed households and household members and dependants aged 40 years or older, and Medical Aid beneficiaries, with invitations to most groups by birth-year parity;", "heads of self-employed households, household members and dependants aged 40 years or older, and Medical Aid beneficiaries [@cheolseong2017data; @web:kosis2026scrn];"),
+ ("older people with little social contact attended community check-ups less often", "older people who did not take part in community activities attended community check-ups less often"),
+ ("social isolation was associated with non-adherence to cancer screening [@sedani2025social]", "social isolation was associated with non-adherence to some cancer screenings [@sedani2025social]"),
+ ("the change in the eligible population in 2019, the pandemic", "the change in the eligible population in 2019 [@web:mohw2018youth], the pandemic"),
+]
 def fix(t):
     for a, b in SUB: t = t.replace(a, b)
     return t
@@ -106,7 +116,8 @@ def pdf(p, tag):
     subprocess.run(["/opt/homebrew/bin/soffice", "--headless", f"-env:UserInstallation=file:///tmp/lo_scrn_{tag}", "--convert-to", "pdf", "--outdir", OUT, p], check=True, capture_output=True)
     return int(re.search(r"Pages:\s+(\d+)", subprocess.run(["pdfinfo", p.replace(".docx", ".pdf")], capture_output=True, text=True).stdout).group(1))
 if __name__ == "__main__":
-    _all = "\n".join(C.INTRO + [q for x in C.METHODS for q in x[1:]] + [q for x in C.RESULTS for q in x[1:]] + C.DISCUSSION); assert all(a in _all for a, _ in SUB), "SUB 불일치"
+    _all = "\n".join(C.INTRO + [q for x in C.METHODS for q in x[1:]] + [q for x in C.RESULTS for q in x[1:]] + C.DISCUSSION)
+    for _a, _b in SUB: assert _a in _all, ("SUB 불일치", _a[:60]); _all = _all.replace(_a, _b)
     p = os.path.join(OUT, "Manuscript_anonymised.docx"); aw = sum(len(t.split()) + 1 for _, t in ABSTRACT)   # 소제목 포함
     J, rl = build(); J.doc_title = "Manuscript"; J.save(p)
     mw = main_words(p); nref = len(rl)
