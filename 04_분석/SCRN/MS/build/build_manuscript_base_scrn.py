@@ -86,11 +86,8 @@ FIGCAP = {
  1: "Uptake of the first-stage general health check-up, Republic of Korea, 2011–2024. (A) District standardised uptake ratio (observed over sex-standardised expected attendees, 14 years pooled), with Getis-Ord Gi* hot spots (solid outline) and cold spots (dashed outline) of the log ratio at P < 0.05 without correction for multiple testing. (B) Residual district effect from the principal model: exponentiated posterior mean of the combined structured and unstructured district effect, an odds ratio conditional on the district characteristics. (C) National uptake among eligible men and women by year; dotted lines mark the change of the published table and a 10% rise in eligible persons in 2018, the 2019 extension of eligibility to adults aged 20–39 years, and the COVID-19 pandemic from 2020.",
  2: "Odds ratios of uptake per 1 standard deviation (95% credible intervals) for the share of older adults living alone, tertiary-educated adults, walking and public sports facilities across alternative analyses: principal model, Knorr-Held type II and IV space-time interactions, Spatial+, restricted spatial regression, between-district and within-district components, and 2019–2024 only.",
 }
-def foot_row(J, text, sz=8, ls=12):
-    from docx.enum.text import WD_LINE_SPACING
-    t = J.doc.tables[-1]; r = t.add_row(); mc = r.cells[0].merge(r.cells[-1]); mc.text = ""; p = mc.paragraphs[0]
-    p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY; p.paragraph_format.line_spacing = Pt(ls); p.paragraph_format.space_before = Pt(4)
-    J._emit(p, text, sz)
+def foot_row(J, text, sz=8, ls=12):   # 11/21: 각주는 표 안 병합 행이 아니라 표 바로 아래 문단(3선 마지막 가로줄이 보이도록, 69호 교훈)
+    J.para(text, sz=sz, double=False, before=4, after=6)
 def put_table(J, t, fs=9):
     J.table_fit(t[0], t[1], t[2], "", fs_max=fs, title_bold=True); foot_row(J, t[3], 8)
 def declarations(J, lvl=2):
