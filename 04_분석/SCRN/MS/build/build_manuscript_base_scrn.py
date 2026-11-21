@@ -27,7 +27,7 @@ class TX(JKMS):
     def _emit(self, p, text, sz=12, bold=False, italic=False):
         if not self.raw: text = re.sub(r"(^|[\s(])-(?=\d)", "\\1\u2212", text)
         return super()._emit(p, text, sz, bold, italic)
-def pandoc_cites(t):   # Sage Vancouver: 위첨자 번호는 구두점 뒤
+def pandoc_cites(t):   # Vancouver: 위첨자 번호는 구두점 뒤
     t = re.sub(r"\s*\[(@[^\]]+)\]", lambda m: "{{" + ",".join(k.strip().lstrip("@") for k in m.group(1).split(";")) + "}}", t)
     return re.sub(r"(\{\{[^}]+\}\})([.,;:])", r"\2\1", t)
 def ref(k):

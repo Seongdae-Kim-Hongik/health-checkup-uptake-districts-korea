@@ -2,9 +2,9 @@
 
 Analysis code for the manuscript
 
-> Kim S. *Where do eligible adults miss Korea's national health check-up? Fourteen years of district uptake.*
+> Kim S. *Does organised health screening reach affluent districts? Fourteen years of eligible-population uptake of Korea's national health check-up.*
 
-Archived version: Zenodo, https://doi.org/10.5281/zenodo.24357326 (v1.0.1).
+Archived version: Zenodo, https://doi.org/10.5281/zenodo.24411654 (v1.0.2).
 
 This code is released under the MIT licence.
 
@@ -42,3 +42,7 @@ Set `ST_DATA_ROOT` and `ST_GPT_DATASET` to the local copies of the public source
 | 6 | `04_분석/SCRN/MS/build/*.py` | Numbers, figures, manuscript, supplementary material |
 
 R 4.6.0 with R-INLA 25.10.19 (1 thread), Python 3.9 with pandas, geopandas and python-docx.
+
+## Expected counts and offsets
+
+The binomial offset is the logit of the sex-standardised expected uptake (eligible persons by sex x national uptake by sex and year); no constant is added to expected counts, offsets or denominators, and no district-year has zero eligible persons or attendees. In the population-based sensitivity offset the expected uptake is bounded to 0.02-0.98 so that its logit is defined; the bound applies in 2 of 3,206 district-years (Hanam 2016, ratio 1.02; Sejong 2015, 0.98). The descriptive Moran's I of yearly log ratios uses log((attendees + 0.5)/E); the smallest district-year count is 1,978 attendees, so the 0.5 has no material effect.

@@ -24,6 +24,7 @@
   "elocation": "doi: 10.1016/j.amjcard.2017.07.093",
   "doi": "10.1016/j.amjcard.2017.07.093",
   "pmid": "28886857",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "The American journal of cardiology",
   "authors_all": [
    "Suh Y",
@@ -59,6 +60,7 @@
   "elocation": "doi: 10.1186/s40557-017-0157-0",
   "doi": "10.1186/s40557-017-0157-0",
   "pmid": "28286659",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Annals of occupational and environmental medicine",
   "authors_all": [
    "Kang YJ",
@@ -83,6 +85,7 @@
   "elocation": "doi: 10.1186/s40557-017-0158-z",
   "doi": "10.1186/s40557-017-0158-z",
   "pmid": "28203379",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Annals of occupational and environmental medicine",
   "authors_all": [
    "Kim EA"
@@ -107,6 +110,7 @@
   "elocation": "doi: 10.1186/s40557-017-0160-5",
   "doi": "10.1186/s40557-017-0160-5",
   "pmid": "28239481",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Annals of occupational and environmental medicine",
   "authors_all": [
    "Eom H",
@@ -133,6 +137,7 @@
   "elocation": "doi: 10.1265/ehpm.22-00239",
   "doi": "10.1265/ehpm.22-00239",
   "pmid": "36697026",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Environmental health and preventive medicine",
   "authors_all": [
    "Kim Y",
@@ -154,13 +159,14 @@
   ],
   "title": "Impact of COVID-19 on national health screening participation and chronic disease detection: evidence from South Korea's NHIS database",
   "journal": "Front Public Health",
-  "year": 2025,
+  "year": 2026,
   "vol": "13",
   "issue": "",
   "pages": "1721010",
   "elocation": "doi: 10.3389/fpubh.2025.1721010",
   "doi": "10.3389/fpubh.2025.1721010",
   "pmid": "41929395",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Frontiers in public health",
   "authors_all": [
    "Kim S",
@@ -191,6 +197,7 @@
   "elocation": "doi: 10.4143/crt.2016.243",
   "doi": "10.4143/crt.2016.243",
   "pmid": "27809458",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Cancer research and treatment",
   "authors_all": [
    "Hahm MI",
@@ -220,6 +227,7 @@
   "elocation": "",
   "doi": "10.7314/apjcp.2014.15.7.3279",
   "pmid": "24815483",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Asian Pacific journal of cancer prevention : APJCP",
   "authors_all": [
    "Kang M",
@@ -247,6 +255,7 @@
   "elocation": "doi: 10.35371/aoem.2026.38.e22",
   "doi": "10.35371/aoem.2026.38.e22",
   "pmid": "42581701",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Annals of occupational and environmental medicine",
   "authors_all": [
    "Lee CY",
@@ -262,12 +271,13 @@
   "title": "The inverse care law",
   "journal": "Lancet",
   "year": 1971,
-  "vol": "1",
+  "vol": "297",
   "issue": "7696",
   "pages": "405-12",
   "elocation": "",
   "doi": "10.1016/s0140-6736(71)92410-x",
   "pmid": "4100731",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Lancet (London, England)",
   "authors_all": [
    "Hart JT"
@@ -291,6 +301,7 @@
   "elocation": "doi: 10.1001/jama.2021.6524",
   "doi": "10.1001/jama.2021.6524",
   "pmid": "34100866",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "JAMA",
   "authors_all": [
    "Liss DT",
@@ -323,6 +334,7 @@
   "elocation": "doi: 10.1111/cas.12561",
   "doi": "10.1111/cas.12561",
   "pmid": "25456306",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Cancer science",
   "authors_all": [
    "Tabuchi T",
@@ -352,6 +364,7 @@
   "elocation": "doi: 10.1016/j.healthpol.2013.06.008",
   "doi": "10.1016/j.healthpol.2013.06.008",
   "pmid": "23981547",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Health policy (Amsterdam, Netherlands)",
   "authors_all": [
    "Chiou ST",
@@ -374,6 +387,7 @@
   "elocation": "doi: 10.1186/s12889-019-6841-y",
   "doi": "10.1186/s12889-019-6841-y",
   "pmid": "31046740",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "BMC public health",
   "authors_all": [
    "Shim HY",
@@ -397,6 +411,7 @@
   "elocation": "doi: 10.4143/crt.2015.040",
   "doi": "10.4143/crt.2015.040",
   "pmid": "26194373",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Cancer research and treatment",
   "authors_all": [
    "Kim SJ",
@@ -418,6 +433,7 @@
   "elocation": "doi: 10.1016/j.healthpol.2016.04.005",
   "doi": "10.1016/j.healthpol.2016.04.005",
   "pmid": "27095277",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Health policy (Amsterdam, Netherlands)",
   "authors_all": [
    "Ko H"
@@ -450,6 +466,7 @@
   "elocation": "doi: 10.1186/s12889-018-5426-5",
   "doi": "10.1186/s12889-018-5426-5",
   "pmid": "29716551",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "BMC public health",
   "authors_all": [
    "Yamaguchi M",
@@ -487,6 +504,7 @@
   "elocation": "doi: 10.1001/jamanetworkopen.2024.49556",
   "doi": "10.1001/jamanetworkopen.2024.49556",
   "pmid": "39752162",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "JAMA network open",
   "authors_all": [
    "Sedani AE",
@@ -515,6 +533,7 @@
   "elocation": "doi: 10.4178/epih.e2023086",
   "doi": "10.4178/epih.e2023086",
   "pmid": "37752795",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Epidemiology and health",
   "authors_all": [
    "Luu XQ",
@@ -543,6 +562,7 @@
   "elocation": "doi: 10.4178/epih.e2022053",
   "doi": "10.4178/epih.e2022053",
   "pmid": "35760396",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Epidemiology and health",
   "authors_all": [
    "Park H",
@@ -576,6 +596,7 @@
   "elocation": "doi: 10.1111/ggi.13791",
   "doi": "10.1111/ggi.13791",
   "pmid": "31709716",
+  "verified": "PubMed esummary 2026-11-19",
   "fulljournal": "Geriatrics & gerontology international",
   "authors_all": [
    "Igarashi Y",
@@ -614,6 +635,7 @@
   "pages": "799-800",
   "doi": "10.1093/ije/dyw253",
   "pmid": "27794523",
+  "verified": "59호 refs_lips 검증본",
   "fulljournal": "International journal of epidemiology",
   "authors_all": [
    "Cheol Seong S",
@@ -646,6 +668,7 @@
   "pages": "455-466",
   "doi": "10.1002/sim.4780020404",
   "pmid": "6672943",
+  "verified": "59호 refs_lips 검증본",
   "fulljournal": "Statistics in medicine",
   "authors_all": [
    "Inskip H",
@@ -674,6 +697,7 @@
   "pages": "211-217",
   "doi": "10.1016/j.phrp.2015.05.003",
   "pmid": "26430619",
+  "verified": "59호 refs_lips 검증본",
   "fulljournal": "Osong public health and research perspectives",
   "authors_all": [
    "Kang YW",
@@ -702,6 +726,7 @@
   "pages": "1145-1165",
   "doi": "10.1177/0962280216660421",
   "pmid": "27566770",
+  "verified": "59호 refs_lips 검증본",
   "fulljournal": "Statistical methods in medical research",
   "authors_all": [
    "Riebler A",
@@ -725,7 +750,8 @@
   "vol": "32",
   "issue": "1",
   "pages": "1-28",
-  "doi": "10.1214/16-sts576"
+  "doi": "10.1214/16-sts576",
+  "verified": "59호 refs_lips 검증본"
  },
  "rue2009approximate": {
   "type": "journal",
@@ -740,7 +766,8 @@
   "vol": "71",
   "issue": "2",
   "pages": "319-392",
-  "doi": "10.1111/j.1467-9868.2008.00700.x"
+  "doi": "10.1111/j.1467-9868.2008.00700.x",
+  "verified": "59호 refs_lips 검증본"
  },
  "knorrheld2000bayesian": {
   "type": "journal",
@@ -755,6 +782,7 @@
   "pages": "2555-2567",
   "doi": "10.1002/1097-0258(20000915/30)19:17/18<2555::aid-sim587>3.0.co;2-#",
   "pmid": "10960871",
+  "verified": "59호 refs_lips 검증본",
   "fulljournal": "Statistics in medicine",
   "authors_all": [
    "Knorr-Held L"
@@ -776,6 +804,7 @@
   "pages": "702-712",
   "doi": "10.1177/1745691616658637",
   "pmid": "27694465",
+  "verified": "59호 refs_lips 검증본",
   "fulljournal": "Perspectives on psychological science : a journal of the Association for Psychological Science",
   "authors_all": [
    "Steegen S",
@@ -799,6 +828,7 @@
   "pages": "1279-1290",
   "doi": "10.1111/biom.13656",
   "pmid": "35258102",
+  "verified": "59호 refs_lips 검증본",
   "fulljournal": "Biometrics",
   "authors_all": [
    "Dupont E",
@@ -821,6 +851,7 @@
   "pages": "383-388",
   "doi": "10.1097/EDE.0b013e3181d61eeb",
   "pmid": "20335814",
+  "verified": "59호 refs_lips 검증본",
   "fulljournal": "Epidemiology (Cambridge, Mass.)",
   "authors_all": [
    "Lipsitch M",
@@ -840,7 +871,8 @@
   "vol": "3",
   "issue": "1",
   "pages": "133-153",
-  "doi": "10.1017/psrm.2014.7"
+  "doi": "10.1017/psrm.2014.7",
+  "verified": "59호 refs_lips 검증본"
  },
  "morgenstern1995ecologic": {
   "type": "journal",
@@ -855,6 +887,7 @@
   "pages": "61-81",
   "doi": "10.1146/annurev.pu.16.050195.000425",
   "pmid": "7639884",
+  "verified": "59호 refs_lips 검증본",
   "fulljournal": "Annual review of public health",
   "authors_all": [
    "Morgenstern H"
@@ -878,6 +911,7 @@
   "pages": "1453-1457",
   "doi": "10.1016/S0140-6736(07)61602-X",
   "pmid": "18064739",
+  "verified": "59호 refs_lips 검증본",
   "fulljournal": "Lancet (London, England)",
   "authors_all": [
    "von Elm E",
@@ -901,7 +935,8 @@
   "vol": "43",
   "issue": "1",
   "pages": "1-20",
-  "doi": "10.1007/bf00116466"
+  "doi": "10.1007/bf00116466",
+  "verified": "59호 refs_lips 검증본"
  },
  "ord1995local": {
   "type": "journal",
@@ -915,7 +950,8 @@
   "vol": "27",
   "issue": "4",
   "pages": "286-306",
-  "doi": "10.1111/j.1538-4632.1995.tb00912.x"
+  "doi": "10.1111/j.1538-4632.1995.tb00912.x",
+  "verified": "59호 refs_lips 검증본"
  },
  "web:mois2026population": {
   "type": "web",
@@ -923,7 +959,8 @@
   "title": "Resident registration population by district, sex and 5-year age group, 2011-2024",
   "url": "https://jumin.mois.go.kr",
   "year": 2026,
-  "accessed": "November 19, 2026"
+  "accessed": "November 19, 2026",
+  "verified": "59호 refs_lips 검증본"
  },
  "web:rcore2026": {
   "type": "web",
@@ -931,7 +968,8 @@
   "title": "R: a language and environment for statistical computing. Version 4.6.0. Vienna: R Foundation for Statistical Computing",
   "url": "https://www.R-project.org/",
   "year": 2026,
-  "accessed": "November 19, 2026"
+  "accessed": "November 19, 2026",
+  "verified": "59호 refs_lips 검증본"
  },
  "web:kosis2026scrn": {
   "type": "web",

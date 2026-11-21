@@ -1,3 +1,8 @@
+# content_scrn.py — 65호 SCRN 원고 본문(2026-11-19 작성, 11/21 제목 교체). 수치는 numbers_scrn.json에서만. [@key] = 번호 인용(등장순).
+#  ★제목: 시리즈 틀(229 districts·Age-standardized) 금지, 쌍점 금지. 단독 저자 무인칭. Results 숫자만, Discussion 숫자 없음. 영국식 철자.
+#  ★결과 정의 = 예방 서비스 이용(수검), 질병 아님. screening_uptake 공변량 제외 명시. 격차 작음(SUR P90/P10 1.11) 과장 금지.
+#  ★체육 변수: 주모형 일부 credible이나 KH II–IV에서 모두 소실 → '일관된 연관 근거 없음'. 소실 변수에 '강건' 금지. 역방향(걷기·마을체육시설)은 사후 해석만.
+#  ★잔차 Moran 양측: I > 기대값, p<0.001 → 양의 잔차 자기상관 남음(과평활 아님). Spatial+·RSR 전부 표에 게재.
 import os, json
 HERE = os.path.dirname(os.path.abspath(__file__)); N = json.load(open(os.path.join(HERE, "numbers_scrn.json")))
 def th(x, d=0): return f"{x:,.{d}f}"
@@ -7,7 +12,7 @@ def ph(a, c, lab=False): return ci(N["ph"][f"{a}|{c}"], lab)
 U = N["uptake"]; MV = N["mv"]; RM = N["resid_moran"]
 def rng(k, srcs): v = [N[s][k][0] for s in srcs]; return f"{min(v):.3f}–{max(v):.3f}"
 KH = ("KH_typeI", "KH_typeII", "KH_typeIII", "KH_typeIV")
-TITLE = "Where do eligible adults miss Korea's national health check-up? Fourteen years of district uptake"
+TITLE = "Does organised health screening reach affluent districts? Fourteen years of eligible-population uptake of Korea's national health check-up"
 assert ":" not in TITLE and "229" not in TITLE and "standardi" not in TITLE.lower()
 import pandas as _pd
 from decimal import Decimal, ROUND_HALF_UP

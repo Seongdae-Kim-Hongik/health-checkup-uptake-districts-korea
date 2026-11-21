@@ -15,7 +15,7 @@ FONT="Times New Roman"
 
 class JKMS:
     def __init__(self,cite="sup"):
-        self.cite=cite   # "sup"=JKMS 위첨자, "bracket"=Springer [1-3]
+        self.cite=cite   # "sup"=JKMS 위첨자, "bracket"=[1-3]
         self.doc=Document(); d=self.doc
         st=d.styles["Normal"]; st.font.name=FONT; st.font.size=Pt(12); st.element.rPr.rFonts.set(qn("w:eastAsia"),FONT)
         st.paragraph_format.space_after=Pt(0); st.paragraph_format.line_spacing_rule=WD_LINE_SPACING.DOUBLE
