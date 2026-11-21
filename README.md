@@ -2,9 +2,9 @@
 
 Analysis code for the manuscript
 
-> Kim S. *Does organised health screening reach affluent districts? Fourteen years of eligible-population uptake of Korea's national health check-up.*
+> Kim S. *Persistent small-area gaps in uptake of Korea's organised health check-up among eligible adults, 2011–2024.*
 
-Archived version: Zenodo, https://doi.org/10.5281/zenodo.24411654 (v1.0.2).
+Archived version: Zenodo, https://doi.org/10.5281/zenodo.24412379 (v1.0.3).
 
 This code is released under the MIT licence.
 

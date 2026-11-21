@@ -12,7 +12,7 @@ def ph(a, c, lab=False): return ci(N["ph"][f"{a}|{c}"], lab)
 U = N["uptake"]; MV = N["mv"]; RM = N["resid_moran"]
 def rng(k, srcs): v = [N[s][k][0] for s in srcs]; return f"{min(v):.3f}–{max(v):.3f}"
 KH = ("KH_typeI", "KH_typeII", "KH_typeIII", "KH_typeIV")
-TITLE = "Does organised health screening reach affluent districts? Fourteen years of eligible-population uptake of Korea's national health check-up"
+TITLE = "Persistent small-area gaps in uptake of Korea's organised health check-up among eligible adults, 2011–2024"
 assert ":" not in TITLE and "229" not in TITLE and "standardi" not in TITLE.lower()
 import pandas as _pd
 from decimal import Decimal, ROUND_HALF_UP
